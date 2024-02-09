@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal del Pip-Boy</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #0F380F; /* verde oscuro */
+            color: #FFFF00; /* amarillo */
+            padding: 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        #contador {
+            font-size: 24px;
+            text-align: center;
+        }
+        #geroglificos {
+            display: none;
+            color: #FF0000; /* rojo */
+            font-size: 36px;
+            text-align: center;
+        }
+        #codigoModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 200px;
+        }
+        .modal-content {
+            background-color: #111;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #FFF;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="contador"></div>
+    <div id="geroglificos"></div>
+
+    <div id="codigoModal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <p>Ingresa el código:</p>
+            <input type="text" id="inputCodigo">
+            <button onclick="verificarCodigo()">Verificar</button>
+        </div>
+    </div>
+
+    <audio id="alarma" preload="auto">
+        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+        <!-- Agrega aquí otras fuentes de audio compatibles si lo deseas -->
+    </audio>
+
+    <script>
+        var tiempoRestante = 5; // Contador de prueba con 5 segundos
+        var intervalo;
+        var geroglificosIntervalo;
+
+        function iniciarContador() {
+            intervalo = setInterval(actualizarContador, 1000);
+        }
+
+        function actualizarContador() {
+            tiempoRestante--;
+            if (tiempoRestante >= 0) {
+                var minutos = Math.floor(tiempoRestante / 60);
+                var segundos = tiempoRestante % 60;
+                document.getElementById("contador").innerHTML = 'Tiempo restante: ' + minutos.toString().padStart(3, '0') + ':' + segundos.toString().padStart(2, '0');
+            } else {
+                clearInterval(intervalo);
+                document.getElementById("contador").style.display = "none";
+                mostrarGeroglificos();
+                abrirModal();
+                reproducirAlarma();
+            }
+        }
+
+        function mostrarGeroglificos() {
+            document.getElementById("geroglificos").style.display = "block";
+            geroglificosIntervalo = setInterval(function() {
+                var geroglificos = "&#x13000; &#x13001; &#x13002; &#x13003; &#x13004; &#x13005;"; // Aquí puedes agregar más caracteres geroglíficos si lo deseas
+                document.getElementById("geroglificos").innerHTML += geroglificos;
+            }, 100);
+        }
+
+        function abrirModal() {
+            document.getElementById("codigoModal").style.display = "block";
+        }
+
+        function cerrarModal() {
+            document.getElementById("codigoModal").style.display = "none";
+        }
+
+        function verificarCodigo() {
+            var codigoIngresado = document.getElementById("inputCodigo").value.trim();
+            var codigoCorrecto = "4 8 15 16 23 42"; // Cambia esto al código correcto
+            if (codigoIngresado === codigoCorrecto) {
+                document.getElementById("codigoModal").style.display = "none";
+                detenerAlarma();
+                reiniciarContador();
+            } else {
+                alert("Código incorrecto. Inténtalo de nuevo.");
+            }
+        }
+
+        function reproducirAlarma() {
+            var alarma = document.getElementById("alarma");
+            alarma.loop = true;
+            alarma.play();
+        }
+
+        function detenerAlarma() {
+            var alarma = document.getElementById("alarma");
+            alarma.pause();
+            alarma.currentTime = 0;
+        }
+
+        function reiniciarContador() {
+            tiempoRestante = 5; // Contador de prueba con 5 segundos
+            document.getElementById("contador").style.display = "block";
+            document.getElementById("geroglificos").style.display = "none";
+            clearInterval(geroglificosIntervalo);
+            iniciarContador();
+        }
+
+        iniciarContador();
+    </script>
+</body>
+</html>
