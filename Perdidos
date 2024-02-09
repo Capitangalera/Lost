@@ -140,7 +140,7 @@
         }
 
         function reiniciarContador() {
-            tiempoRestante = 5; // Contador de prueba con 5 segundos
+            tiempoRestante = 6240; // Contador de prueba con 5 segundos
             document.getElementById("contador").style.display = "block";
             document.getElementById("geroglificos").style.display = "none";
             clearInterval(geroglificosIntervalo);
