@@ -71,7 +71,7 @@
     </div>
 
     <audio id="alarma" preload="auto">
-        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+        <source src="https://pixabay.com/es/users/pixabay-1/" type="audio/wav">
         <!-- Agrega aquí otras fuentes de audio compatibles si lo deseas -->
     </audio>
 
